@@ -44,10 +44,7 @@ struct ContentView: View {
                     }, label: {
                         //There are four built-in shapes in Swift: rectangle, rounded rectangle, circle, and capsule
                         Image(self.countries[number])
-                            .renderingMode(.original)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(Color.black, lineWidth: 1.0))
-                            .shadow(color: .black, radius: 10)
+                            .flagStyle()
                     })
                 }
                 Text("Your current score is: \(score)")
@@ -68,6 +65,16 @@ struct ContentView: View {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
+}
+
+extension Image {
+    func flagStyle() -> some View {
+        self
+            .renderingMode(.original)
+            .clipShape(Capsule())
+            .overlay(Capsule().stroke(Color.black, lineWidth: 1.0))
+            .shadow(color: .black, radius: 10)
+   }
 }
 
 struct ContentView_Previews: PreviewProvider {
