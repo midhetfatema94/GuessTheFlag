@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var currentFlagName = ""
+    @State private var rotationAngle: Double = 0
     
     var body: some View {
         ZStack {
@@ -35,17 +36,22 @@ struct ContentView: View {
                         if number == correctAnswer {
                             scoreTitle = "Correct Answer!"
                             score += 1
+                            withAnimation() {
+                                self.rotationAngle += 360
+                            }
                         } else {
                             scoreTitle = "Wrong Answer"
                             score -= 1
                         }
                         currentFlagName = countries[number]
-                        showingScore = true
+//                        showingScore = true
+                        self.askQuestion()
                     }, label: {
                         //There are four built-in shapes in Swift: rectangle, rounded rectangle, circle, and capsule
                         Image(self.countries[number])
                             .flagStyle()
                     })
+                    .rotation3DEffect(Angle(degrees: rotationAngle), axis: (x: 0.0, y: 1.0, z: 0.0))
                 }
                 Text("Your current score is: \(score)")
                     .foregroundColor(.white)
@@ -53,11 +59,11 @@ struct ContentView: View {
                     .fontWeight(.bold)
                 Spacer()
             }
-            .alert(isPresented: $showingScore) {
-                Alert(title: Text(scoreTitle), message: Text("That is the flag of \(currentFlagName)"), dismissButton: .default(Text("Continue")) {
-                    self.askQuestion()
-                })
-            }
+//            .alert(isPresented: $showingScore) {
+//                Alert(title: Text(scoreTitle), message: Text("That is the flag of \(currentFlagName)"), dismissButton: .default(Text("Continue")) {
+//                    self.askQuestion()
+//                })
+//            }
         }
     }
     
